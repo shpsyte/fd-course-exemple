@@ -1,3 +1,3 @@
 export default function Home() {
-  return <div>This is awesome...! Publishing at Vercel - at develop</div>
+  return <div>Hey ZZEECCC you are awesome, keep it up my Friend!</div>
 }
