@@ -7,10 +7,14 @@ export default async function status(req, res) {
   query = await database.query("SHOW max_connections;");
   const databaseMaxConValue = +query.rows[0].max_connections;
 
-  query = await database.query(`SELECT count(*)::int 
-                                  FROM pg_stat_activity  
-                                 WHERE 1=1
-                                   AND datname = 'local_db';`);
+  const databaseName = process.env.POSTGRES_DB;
+
+  query = await database.query({
+    text: `SELECT count(*)::int 
+             FROM pg_stat_activity  
+            WHERE datname = $1;`,
+    values: [databaseName],
+  });
 
   const databaseCurrentConnextion = query.rows[0].count;
 
@@ -22,7 +26,6 @@ export default async function status(req, res) {
         version: databaseVersionValue,
         max_connections: databaseMaxConValue,
         open_connections: databaseCurrentConnextion,
-        // email: "asdfa",
       },
     },
   });
