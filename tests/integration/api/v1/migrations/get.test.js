@@ -1,11 +1,15 @@
 import database from "infra/database";
+beforeAll(async () => {
+  await cleanDatabase();
+});
+
+async function cleanDatabase() {
+  const q = "drop schema public cascade; create schema public;";
+  await database.query(q);
+}
 
 test("Get to /api/v1/migrations should return 200", async () => {
   const response = await fetch("http://localhost:3000/api/v1/migrations");
-  // console.log(response);
-  console.log(process.env.NODE_ENV);
-  console.log(process.env.DATABASE_URL);
-
   // const q = "SELECT * FROM pgmigrations";
   // const result = await database.query(q);
   // console.log(result);
