@@ -26,7 +26,7 @@ test("POST to /api/v1/migrations to apply all migrations", async () => {
 
   // Testing the endpoint response status code
   const actualStatusCode = applyMigrationResponse.status;
-  expect(actualStatusCode).toBe(200);
+  expect(actualStatusCode).toBe(201);
 
   // Testing if the response is an array
   const responseBody = await applyMigrationResponse.json();

@@ -2,28 +2,32 @@ import { join } from "node:path";
 import migrationRunner from "node-pg-migrate";
 
 export default async function migrations(req, res) {
+  const defaultMigration = {
+    databaseUrl: process.env.DATABASE_URL,
+    dryRun: false,
+    dir: join("infra", "migrations"),
+    direction: "up",
+    verbose: true,
+    migrationsTable: "pgmigrations",
+  };
+
   if (req.method === "POST") {
-    const migrations = await migrationRunner({
-      databaseUrl: process.env.DATABASE_URL,
-      dryRun: false,
-      dir: join("infra", "migrations"),
-      direction: "up",
-      verbose: true,
-      migrationsTable: "pgmigrations",
-    });
-    return res.status(200).json(migrations);
+    const migratedMigrations = await migrationRunner(defaultMigration);
+
+    if (migratedMigrations.length > 0) {
+      return res.status(201).json(migratedMigrations);
+    }
+
+    return res.status(200).json(migratedMigrations);
   }
 
   if (req.method === "GET") {
-    const migrations = await migrationRunner({
-      databaseUrl: process.env.DATABASE_URL,
+    const pendingMigrations = await migrationRunner({
+      ...defaultMigration,
       dryRun: true,
-      dir: join("infra", "migrations"),
-      direction: "up",
-      verbose: true,
-      migrationsTable: "pgmigrations",
     });
-    return res.status(200).json(migrations);
+
+    return res.status(200).json(pendingMigrations);
   }
 
   return res.status(405).json({ message: "Method not allowed" });
