@@ -9,6 +9,7 @@ export default async function migrations(req, res) {
     return res.status(405).json({ message: "Method not allowed" });
   }
   let dbClient;
+  // eslint-disable-next-line no-undef
 
   try {
     dbClient = await database.getNewClient();
