@@ -11,7 +11,11 @@
     "db": "psql --host=localhost --username=local_user --port=5432 --db=local_db ",
     "lint:check": "prettier --check .",
     "lint:fix": "prettier --write .",
+    "test": "npm run services:up && concurrently -n next,jest --hide next -k --success command-jest \"next dev\" \"jest --runInBand --verbose\" ",
     "test:watch": "npm run services:up && npm run wait-for-postgress && jest --watchAll --runInBand",
+    "migrate:create": "node-pg-migrate --migrations-dir infra/migrations create",
+    "migrate:up": "node-pg-migrate --migrations-dir infra/migrations --envPath .env.development up ",
+    "migrate:down": "node-pg-migrate --migrations-dir infra/migrations --envPath .env.development down",
     "migrate:status": "node-pg-migrate --migrations-dir infra/migrations --envPath .env.development status",
     "wait-for-postgress": "node infra/scripts/wait-for-postgress.js"
   },
