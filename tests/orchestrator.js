@@ -8,7 +8,7 @@ async function waitForAllServices() {
       maxTimeout: 3000,
     });
 
-    async function fetchStatusPage(bail, tryNumber) {
+    async function fetchStatusPage() {
       const response = await fetch("http://localhost:3000/api/v1/status");
       const responseJson = await response.json();
       if (responseJson.dependencies.database.open_connections > 0) {
@@ -18,7 +18,7 @@ async function waitForAllServices() {
     }
   }
 }
-
-export default {
-  waitForAllServices,
+const orchestrator = {
+  waitForAllServices: waitForAllServices,
 };
+export default orchestrator;
