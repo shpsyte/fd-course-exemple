@@ -32,7 +32,7 @@ jobs:
         with:
           node-version: "lts/hydrogen"
 
-      - name: Install dependencies  of linting sss
+      - name: Install dependencies  of linting
         run: npm ci
 
       - name: Run Linting
