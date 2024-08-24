@@ -13,7 +13,7 @@ async function cleanDatabase() {
 test("POST to /api/v1/migrations to apply all migrations", async () => {
   // Get information about migrations before applying
   const migrationsResponse = await fetch(
-    "http://localhost:3000/api/v1/migrations"
+    "http://localhost:3000/api/v1/migrations",
   );
   const migrationsData = await migrationsResponse.json();
   const totalMigrationsToApply = migrationsData.length;
@@ -23,7 +23,7 @@ test("POST to /api/v1/migrations to apply all migrations", async () => {
     "http://localhost:3000/api/v1/migrations",
     {
       method: "POST",
-    }
+    },
   );
 
   // Testing the endpoint response status code
@@ -36,7 +36,7 @@ test("POST to /api/v1/migrations to apply all migrations", async () => {
 
   // The number of migrations applied should be the same as the number of migrations returned
   const migrationCountQuery = await database.query(
-    "SELECT count(*) FROM pgmigrations;"
+    "SELECT count(*) FROM pgmigrations;",
   );
   const numerOfMigrationsInDb = +migrationCountQuery.rows[0].count;
   expect(numerOfMigrationsInDb).toBe(responseBody.length);

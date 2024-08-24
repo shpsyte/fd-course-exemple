@@ -25,6 +25,6 @@ test("Get to /api/v2/status should return 200", async () => {
           open_connections: 1,
         },
       },
-    })
+    }),
   );
 });
