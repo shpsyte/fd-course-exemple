@@ -4,7 +4,9 @@
   "description": "This is a course by FD",
   "main": "index.js",
   "scripts": {
-    "dev": "npm run services:up && npm run services:wait:databse && npm run migrations:up && next dev",
+    "predev": "npm run services:up && npm run services:wait:databse && npm run migrations:up",
+    "dev": "trap \"echo && echo 👋😁 Bye...\n\" INT TERM && next dev",
+    "postdev": "npm run services:stop",
     "services:up": "docker compose -f infra/compose.yaml up -d",
     "services:stop": "docker compose -f infra/compose.yaml stop",
     "services:down": "docker compose -f infra/compose.yaml down",
