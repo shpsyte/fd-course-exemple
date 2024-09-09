@@ -4,26 +4,26 @@
   "description": "This is a course by FD",
   "main": "index.js",
   "scripts": {
-    "dev": "npm run services:up && npm run services:wait:database && npm run migrations:up && next dev",
+    "dev": "npm run services:up && npm run services:wait:databse && npm run migrations:up && next dev",
     "services:up": "docker compose -f infra/compose.yaml up -d",
     "services:stop": "docker compose -f infra/compose.yaml stop",
     "services:down": "docker compose -f infra/compose.yaml down",
-    "services:wait:database": "node infra/scripts/wait-for-postgress.js",
+    "services:wait:databse": "node infra/scripts/wait-for-postgress.js",
     "migrations:create": "node-pg-migrate --migrations-dir infra/migrations create",
-    "migrations:up": "node-pg-migrate --migrations-dir infra/migrations --envpath .env.development up ",
-    "migrations:down": "node-pg-migrate --migrations-dir infra/migrations --envpath .env.development down",
-    "migrations:status": "node-pg-migrate --migrations-dir infra/migrations --envpath .env.development status",
+    "migrations:up": "node-pg-migrate --migrations-dir infra/migrations --envPath .env.development up ",
+    "migrations:down": "node-pg-migrate --migrations-dir infra/migrations --envPath .env.development down",
+    "migrations:status": "node-pg-migrate --migrations-dir infra/migrations --envPath .env.development status",
     "db": "psql --host=localhost --username=local_user --port=5432 --db=local_db ",
     "lint:prettier:check": "prettier --check .",
     "lint:prettier:fix": "prettier --write .",
     "lint:eslint:check": "next lint --dir .",
     "test": "npm run services:up && concurrently -n next,jest --hide next -k --success command-jest \"next dev\" \"jest --runInBand --verbose\" ",
-    "test:watch": "npm run services:up && npm run services:wait:database && jest --watchall --runinband",
+    "test:watch": "npm run services:up && npm run services:wait:databse && jest --watchAll --runInBand",
     "prepare": "husky",
     "commit": "cz"
   },
   "author": "",
-  "license": "mit",
+  "license": "MIT",
   "dependencies": {
     "async-retry": "1.3.3",
     "dotenv": "16.4.5",
@@ -34,7 +34,7 @@
     "react": "18.3.1",
     "react-dom": "18.3.1"
   },
-  "devdependencies": {
+  "devDependencies": {
     "@commitlint/cli": "19.4.0",
     "@commitlint/config-conventional": "19.2.2",
     "@typescript-eslint/parser": "^8.2.0",
