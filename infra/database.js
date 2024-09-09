@@ -1,7 +1,6 @@
 import { Client } from "pg";
 
 async function query(queryObject) {
- 
   const client = await getNewClient();
 
   try {
@@ -24,8 +23,6 @@ async function getNewClient() {
     password: process.env.POSTGRES_PASSWORD,
     ssl: getSSLValues(),
   });
-
- 
 
   await client.connect();
   return client;
