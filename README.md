@@ -1,4 +1,3 @@
 # fd-course-exemple
 
-This is a course by FD
-test 1 2 3
+This is a workshop I am running for Junior devs!
