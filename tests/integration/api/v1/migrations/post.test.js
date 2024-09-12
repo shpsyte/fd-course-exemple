@@ -10,7 +10,7 @@ async function cleanDatabase() {
   await database.query(q);
 }
 
-test("POST to /api/v1/migrations to apply all migrations", async () => {
+test("POST to /api/v1/migrations to apply all teste migrations", async () => {
   // Get information about migrations before applying
   const migrationsResponse = await fetch(
     "http://localhost:3000/api/v1/migrations",
