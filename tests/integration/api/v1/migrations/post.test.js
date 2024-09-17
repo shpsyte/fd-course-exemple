@@ -1,46 +1,41 @@
 import orchestrator from "tests/orchestrator.js";
-import database from "infra/database";
+
 beforeAll(async () => {
   await orchestrator.waitForAllServices();
-  await cleanDatabase();
+  await orchestrator.clearDatabase();
 });
 
-async function cleanDatabase() {
-  const q = "drop schema public cascade; create schema public;";
-  await database.query(q);
-}
+describe("POST /api/v1/migrations", () => {
+  describe("Anonymous user", () => {
+    describe("Running pending migrations", () => {
+      test("For the first time", async () => {
+        const response1 = await fetch(
+          "http://localhost:3000/api/v1/migrations",
+          {
+            method: "POST",
+          },
+        );
+        expect(response1.status).toBe(201);
 
-test("POST to /api/v1/migrations to apply all teste migrations", async () => {
-  // Get information about migrations before applying
-  const migrationsResponse = await fetch(
-    "http://localhost:3000/api/v1/migrations",
-  );
-  const migrationsData = await migrationsResponse.json();
-  const totalMigrationsToApply = migrationsData.length;
+        const response1Body = await response1.json();
 
-  // Perform the migration
-  const applyMigrationResponse = await fetch(
-    "http://localhost:3000/api/v1/migrations",
-    {
-      method: "POST",
-    },
-  );
+        expect(Array.isArray(response1Body)).toBe(true);
+        expect(response1Body.length).toBeGreaterThan(0);
+      });
+      test("For the second time", async () => {
+        const response2 = await fetch(
+          "http://localhost:3000/api/v1/migrations",
+          {
+            method: "POST",
+          },
+        );
+        expect(response2.status).toBe(200);
 
-  // Testing the endpoint response status code
-  const actualStatusCode = applyMigrationResponse.status;
-  expect(actualStatusCode).toBe(201);
+        const response2Body = await response2.json();
 
-  // Testing if the response is an array
-  const responseBody = await applyMigrationResponse.json();
-  expect(Array.isArray(responseBody)).toBe(true);
-
-  // The number of migrations applied should be the same as the number of migrations returned
-  const migrationCountQuery = await database.query(
-    "SELECT count(*) FROM pgmigrations;",
-  );
-  const numerOfMigrationsInDb = +migrationCountQuery.rows[0].count;
-  expect(numerOfMigrationsInDb).toBe(responseBody.length);
-
-  // The number of migrations should also be equal to total migrations to apply
-  expect(numerOfMigrationsInDb).toBe(totalMigrationsToApply);
+        expect(Array.isArray(response2Body)).toBe(true);
+        expect(response2Body.length).toBe(0);
+      });
+    });
+  });
 });
