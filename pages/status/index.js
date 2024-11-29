@@ -3,11 +3,6 @@
 import useSWR from 'swr';
 
 
-function CapsLook(props) {  
-  const t = props.text.toUpperCase();
-  return <p>{t} {props.age}</p>;
-}
-
  const fetchAPI = async (key) => {
   try {
    const response = await fetch(key);
