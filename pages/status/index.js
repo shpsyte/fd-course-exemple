@@ -18,21 +18,51 @@ function CapsLook(props) {
  }
 }
 const StatusPage = () => {
-  const response = useSWR('/api/v1/status', fetchAPI, {
+  // const { isLoading, data } = useSWR('/api/v1/status', fetchAPI, {
+  //   refreshInterval: 2000,
+  // });
+
+  // if (isLoading) return <p>Loading...</p>;
+  // if (!data) return <p>No data</p>;
+
+  return (
+    <div>
+      <h1>Status</h1>
+      {/* <p>Last Update: {data}</p> */}
+   
+      <pre>
+          {/* {JSON.stringify(data, null, 2) } */}
+      </pre>
+
+      <UpdatedAt />
+      <DatabaseStatus />
+    </div>
+  );
+};
+
+
+const DatabaseStatus = () => {
+  const { isLoading, data } = useSWR('/api/v1/status', fetchAPI, {
     refreshInterval: 2000,
   });
 
   return (
     <div>
-   
+      {isLoading && <p>Loading...</p>}
+      {!isLoading && !data && <p>No data</p>}
+
+      <h2>Database Status</h2>
+      <p>Version: {data.dependencies.database.version}</p>
+      <p>MaxConn: {data.dependencies.database.max_connections}</p>
+      <p>OpenConn: {data.dependencies.database.open_connections}</p>
+
       <pre>
-      {response.data && JSON.stringify(response.data, null, 2) }
+      {data && JSON.stringify(data, null, 2)}       
       </pre>
 
-      <UpdatedAt />
     </div>
   );
-};
+}
 
 const UpdatedAt = () => {
   const { isLoading, data } = useSWR('/api/v1/status', fetchAPI, {
