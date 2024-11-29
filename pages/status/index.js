@@ -43,9 +43,9 @@ const DatabaseStatus = () => {
       {!isLoading && !data && <p>No data</p>}
 
       <h2>Database Status</h2>
-      <p>Version: {data.dependencies.database.version}</p>
-      <p>MaxConn: {data.dependencies.database.max_connections}</p>
-      <p>OpenConn: {data.dependencies.database.open_connections}</p>
+      <p>Version: {data?.dependencies?.database?.version}</p>
+      <p>MaxConn: {data?.dependencies?.database?.max_connections}</p>
+      <p>OpenConn: {data?.dependencies?.database?.open_connections}</p>
 
       <pre>{data && JSON.stringify(data, null, 2)}</pre>
     </div>
