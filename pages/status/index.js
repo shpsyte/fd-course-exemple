@@ -1,17 +1,16 @@
-'use client';
+"use client";
 
-import useSWR from 'swr';
+import useSWR from "swr";
 
-
- const fetchAPI = async (key) => {
+const fetchAPI = async (key) => {
   try {
-   const response = await fetch(key);
-  const responseJson = await response.json();
-  return responseJson;
+    const response = await fetch(key);
+    const responseJson = await response.json();
+    return responseJson;
   } catch (error) {
     console.error(error);
- }
-}
+  }
+};
 const StatusPage = () => {
   // const { isLoading, data } = useSWR('/api/v1/status', fetchAPI, {
   //   refreshInterval: 2000,
@@ -24,10 +23,8 @@ const StatusPage = () => {
     <div>
       <h1>Status</h1>
       {/* <p>Last Update: {data}</p> */}
-   
-      <pre>
-          {/* {JSON.stringify(data, null, 2) } */}
-      </pre>
+
+      <pre>{/* {JSON.stringify(data, null, 2) } */}</pre>
 
       <UpdatedAt />
       <DatabaseStatus />
@@ -35,9 +32,8 @@ const StatusPage = () => {
   );
 };
 
-
 const DatabaseStatus = () => {
-  const { isLoading, data } = useSWR('/api/v1/status', fetchAPI, {
+  const { isLoading, data } = useSWR("/api/v1/status", fetchAPI, {
     refreshInterval: 2000,
   });
 
@@ -51,16 +47,13 @@ const DatabaseStatus = () => {
       <p>MaxConn: {data.dependencies.database.max_connections}</p>
       <p>OpenConn: {data.dependencies.database.open_connections}</p>
 
-      <pre>
-      {data && JSON.stringify(data, null, 2)}       
-      </pre>
-
+      <pre>{data && JSON.stringify(data, null, 2)}</pre>
     </div>
   );
-}
+};
 
 const UpdatedAt = () => {
-  const { isLoading, data } = useSWR('/api/v1/status', fetchAPI, {
+  const { isLoading, data } = useSWR("/api/v1/status", fetchAPI, {
     refreshInterval: 2000,
   });
 
@@ -70,6 +63,6 @@ const UpdatedAt = () => {
       {data && <p>Updated at: {new Date(data.updated_at).toLocaleString()}</p>}
     </div>
   );
-}
+};
 
 export default StatusPage;
