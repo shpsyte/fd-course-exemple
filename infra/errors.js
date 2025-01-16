@@ -17,3 +17,20 @@ export class InternalServerError extends Error {
     };
   }
 }
+export class MethodNotAllowedError extends Error {
+  constructor() {
+    super("Method Not Allowed");
+    this.name = "MethodNotAllowedError";
+    this.action = "Pls check the allowed methods for this endpoint";
+    this.statusCode = 405;
+  }
+
+  toJSON() {
+    return {
+      name: this.name,
+      message: this.message,
+      action: this.action,
+      status_code: this.statusCode,
+    };
+  }
+}
