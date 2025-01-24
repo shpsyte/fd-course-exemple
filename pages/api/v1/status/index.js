@@ -1,29 +1,12 @@
 import { createRouter } from "next-connect";
 import database from "infra/database";
-import { InternalServerError, MethodNotAllowedError } from "infra/errors";
+import controller from "@/infra/controller";
 
 const router = createRouter();
 
 router.get(getHandler);
 
-export default router.handler({
-  onNoMatch: onNoMatchHanlder,
-  onError: onErrorHandler,
-});
-
-function onNoMatchHanlder(req, res) {
-  const publicError = new MethodNotAllowedError();
-  res.status(publicError.statusCode).json(publicError);
-}
-
-function onErrorHandler(error, req, res) {
-  console.error("Error on next-connect", { error });
-  const publicErrir = new InternalServerError({
-    cause: error,
-  });
-  console.error({ publicErrir });
-  res.status(500).json(publicErrir);
-}
+export default router.handler(controller.errorHandler);
 
 async function getHandler(req, res) {
   const updatedAt = new Date().toISOString();
@@ -55,5 +38,3 @@ async function getHandler(req, res) {
     },
   });
 }
-
-// export default router.handler();
