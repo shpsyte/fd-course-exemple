@@ -13,7 +13,6 @@ function getDefaulMigration(dbClient) {
   };
 }
 
-
 async function listPendingMigrations() {
   let dbClient;
   try {
@@ -30,7 +29,6 @@ async function listPendingMigrations() {
   }
 }
 
-
 async function runPendingMigrations() {
   let dbClient;
 
@@ -40,18 +38,15 @@ async function runPendingMigrations() {
 
     const migratedMigrations = await migrationRunner(defaultMigration);
 
-    return migratedMigrations
-
-   
+    return migratedMigrations;
   } finally {
     await dbClient?.end();
   }
 }
 
-
 const migrator = {
   listPendingMigrations,
-  runPendingMigrations
+  runPendingMigrations,
 };
 
 export default migrator;
