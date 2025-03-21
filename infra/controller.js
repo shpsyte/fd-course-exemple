@@ -2,10 +2,11 @@ import {
   ValidationError,
   InternalServerError,
   MethodNotAllowedError,
+  NotFoundError,
 } from "./errors";
 
 function onError(error, req, res) {
-  if (error instanceof ValidationError) {
+  if (error instanceof ValidationError || error instanceof NotFoundError) {
     console.log("error", error);
     return res.status(error.statusCode).json(error);
   }
