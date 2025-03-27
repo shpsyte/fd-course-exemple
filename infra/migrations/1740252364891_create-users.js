@@ -9,15 +9,17 @@ exports.up = (pgm) => {
     // For ref, Github limits usernames to 39 characters
     username: { type: "varchar(255)", notNull: true },
     email: { type: "varchar(254)", notNull: true, unique: true },
-    password: { type: "varchar(72)", notNull: true },
+    password: { type: "varchar(60)", notNull: true },
     created_at: {
       type: "timestamptz",
       notNull: true,
-      default: pgm.func("now()"),
+      default: pgm.func("timezone('utc', now())"),
     },
     updated_at: {
       type: "timestamptz",
-      default: pgm.func("now()"),
+      default: pgm.func("timezone('utc', now())"),
+      notNull: true,
+
     },
   });
 };
