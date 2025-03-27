@@ -8,7 +8,8 @@ function getDefaulMigration(dbClient) {
     dbClient,
     dir: resolve("infra", "migrations"),
     direction: "up",
-    verbose: true,
+    verbose: false,
+    log: () => {},
     migrationsTable: "pgmigrations",
   };
 }
