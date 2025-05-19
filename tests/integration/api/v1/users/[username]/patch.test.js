@@ -1,5 +1,4 @@
 import orchestrator from "tests/orchestrator.js";
-import { version as uuidVersion } from "uuid";
 
 beforeAll(async () => {
   await orchestrator.waitForAllServices();
@@ -117,6 +116,68 @@ describe("PATCH /api/v1/users/joseluiz", () => {
       );
 
       expect(response2.status).toBe(400);
+    });
+
+    test("With unique `username`", async () => {
+      const response = await fetch("http://localhost:3000/api/v1/users", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username: "uniqueuser1",
+          email: "unique1@curso.dev",
+          password: "password",
+        }),
+      });
+
+      expect(response.status).toBe(201);
+
+      const response2 = await fetch(
+        "http://localhost:3000/api/v1/users/uniqueuser1",
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            username: "uniqueuser2",
+          }),
+        },
+      );
+
+      expect(response2.status).toBe(200);
+    });
+
+    test("With unique `email`", async () => {
+      const response = await fetch("http://localhost:3000/api/v1/users", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username: "uniqueuser3",
+          email: "unique3@curso.dev",
+          password: "password",
+        }),
+      });
+
+      expect(response.status).toBe(201);
+
+      const response2 = await fetch(
+        "http://localhost:3000/api/v1/users/uniqueuser3",
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: "unique23@curso.com",
+          }),
+        },
+      );
+
+      expect(response2.status).toBe(200);
     });
   });
 });

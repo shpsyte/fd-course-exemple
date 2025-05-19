@@ -2,6 +2,11 @@ import database from "infra/database";
 import { NotFoundError, ValidationError } from "infra/errors.js";
 import password from "models/password.js";
 
+async function hashPasswordInObject(unserInputValues) {
+  const hashedPassword = await password.hash(unserInputValues.password);
+  unserInputValues.password = hashedPassword;
+}
+
 async function ValidateUniqueUserName(username) {
   const result = await database.query({
     text: `
@@ -77,11 +82,6 @@ async function create(unserInputValues) {
   const newUser = await runInsertQuery(unserInputValues);
   return newUser;
 
-  async function hashPasswordInObject(unserInputValues) {
-    const hashedPassword = await password.hash(unserInputValues.password);
-    unserInputValues.password = hashedPassword;
-  }
-
   async function runInsertQuery(unserInputValues) {
     const result = await database.query({
       text: `
@@ -126,6 +126,44 @@ async function update(username, userInputValues) {
       await ValidateUniqueEmail(userInputValues.email);
     }
   }
+
+  if ("password" in userInputValues) {
+    await hashPasswordInObject(userInputValues);
+  }
+
+  const userWithNewValues = {
+    ...userFound,
+    ...userInputValues,
+  };
+
+  const updateUser = await runUpdateQuery(userWithNewValues);
+  return updateUser;
+}
+
+async function runUpdateQuery(userWithNewValues) {
+  const result = await database.query({
+    text: `
+          UPDATE
+            users
+          SET 
+            username = $2,
+            email    = $3,
+            password = $4,
+            updated_at = timezone('utc', now())
+          WHERE 
+            id = $1
+          RETURNING
+            *
+    `,
+    values: [
+      userWithNewValues.id,
+      userWithNewValues.username,
+      userWithNewValues.email,
+      userWithNewValues.password,
+    ],
+  });
+
+  return result.rows[0];
 }
 
 const user = {
