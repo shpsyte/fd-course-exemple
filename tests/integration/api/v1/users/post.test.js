@@ -78,7 +78,6 @@ describe("POST /api/v1/users", () => {
       });
 
       expect(response2.status).toBe(400);
-    
     });
 
     test("With duplicate `username`", async () => {
